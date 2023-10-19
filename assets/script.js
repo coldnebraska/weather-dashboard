@@ -1,25 +1,24 @@
-// function getApi() {
-//     var requestUrl = 'api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}';
-  
-//     fetch(requestUrl)
-//       .then(function (response) {
-//         return response.json();
-//       })
-//       .then(function (data) {
-//         // Use the console to examine the response
-//         console.log(data);
-//         // TODO: Loop through the data and generate your HTML
-//         for (i = 0; i < data.length; i++) {
-//           let userLogin = document.createElement("h3")
-//           let userUrl = document.createElement("p")
-//           userLogin.textContent = data[i].login
-//           userUrl.textContent = data[i].html_url
-//           userContainer.append(userLogin)
-//           userContainer.append(userUrl)
-//         }
-//       });
-//   }
-//   fetchButton.addEventListener('click', getApi);
+function getApi() {
+  var requestUrl = 'api.openweathermap.org/data/2.5/forecast?q=austin&appid=6cddf7d816b2147ea014ff6c5dd1dbeb';
+  // {city name}
+  fetch(requestUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      // Use the console to examine the response
+      console.log(data);
+      // TODO: Loop through the data and generate your HTML
+      // for (i = 0; i < data.length; i++) {
+      //   let userLogin = document.createElement("h3")
+      //   let userUrl = document.createElement("p")
+      //   userLogin.textContent = data[i].login
+      //   userUrl.textContent = data[i].html_url
+      //   userContainer.append(userLogin)
+      //   userContainer.append(userUrl)
+      // }
+    });
+  }
 
 function getDate() {
   let date = new Date()
@@ -37,7 +36,7 @@ function setIcons() {
   let day3Icon = $("#day3-icon")
   let day4Icon = $("#day4-icon")
   let day5Icon = $("#day5-icon")
-  
+
   currentIcon.addClass("bi bi-sun-fill")
   day1Icon.addClass("bi bi-sun-fill")
   day2Icon.addClass("bi bi-sun-fill")
@@ -48,3 +47,4 @@ function setIcons() {
 
 getDate()
 setIcons()
+// getApi()
