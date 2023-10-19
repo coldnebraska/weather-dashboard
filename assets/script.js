@@ -1,5 +1,5 @@
 function getApi() {
-  var requestUrl = 'api.openweathermap.org/data/2.5/forecast?q=austin&appid=6cddf7d816b2147ea014ff6c5dd1dbeb';
+  var requestUrl = 'api.openweathermap.org/data/2.5/forecast?q=austin&appid={api key}';
   // {city name}
   fetch(requestUrl)
     .then(function (response) {
