@@ -28,7 +28,23 @@ function getDate() {
   let year = date.getFullYear()
   let currentDate = month + "/" + day + "/" + year
 
-  console.log(currentDate)
+}
+
+function setIcons() {
+  let currentIcon = $("#current-weather-icon")
+  let day1Icon = $("#day1-icon")
+  let day2Icon = $("#day2-icon")
+  let day3Icon = $("#day3-icon")
+  let day4Icon = $("#day4-icon")
+  let day5Icon = $("#day5-icon")
+  
+  currentIcon.addClass("bi bi-sun-fill")
+  day1Icon.addClass("bi bi-sun-fill")
+  day2Icon.addClass("bi bi-sun-fill")
+  day3Icon.addClass("bi bi-sun-fill")
+  day4Icon.addClass("bi bi-sun-fill")
+  day5Icon.addClass("bi bi-sun-fill")
 }
 
 getDate()
+setIcons()
