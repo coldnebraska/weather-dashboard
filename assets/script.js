@@ -60,7 +60,7 @@ function setForecastWeather(data) {
     x += 8
   }
 
-  setForecastIcons()
+  setForecastIcons(data)
 }
 
 function getDate() {
@@ -80,18 +80,28 @@ function getDate() {
   }
 }
 
-function setForecastIcons() {
-  let day1Icon = $("#day1-icon")
-  let day2Icon = $("#day2-icon")
-  let day3Icon = $("#day3-icon")
-  let day4Icon = $("#day4-icon")
-  let day5Icon = $("#day5-icon")
-  
-  day1Icon.addClass("bi bi-sun-fill")
-  day2Icon.addClass("bi bi-sun-fill")
-  day3Icon.addClass("bi bi-sun-fill")
-  day4Icon.addClass("bi bi-sun-fill")
-  day5Icon.addClass("bi bi-sun-fill")
+function setForecastIcons(data) {
+  let x = 7
+
+  for (i = 0; i < 5; i++) {
+    let forecastIcon = $(".forecast").children().children("i").eq(i)
+
+    if (data.list[x].weather[0].id === 800) { // clear
+      forecastIcon.addClass("bi bi-sun-fill")
+    } else if (data.list[x].weather[0].id > 800) { //cloudy
+      forecastIcon.addClass("bi bi-cloud-fill")
+    } else if (data.list[x].weather[0].id < 800 && data.list[x].weather[0].id >= 700) { // haze/mist/fog/dust
+      forecastIcon.addClass("bi bi-cloud-haze")
+    } else if (data.list[x].weather[0].id < 700 && data.list[x].weather[0].id >= 600) { // snow
+      forecastIcon.addClass("bi bi-snow")
+    } else if (data.list[x].weather[0].id < 500 && data.list[x].weather[0].id >= 300) { // rain/drizzle
+      forecastIcon.addClass("bi bi-cloud-rain-heavy-fill")
+    } else { // thunderstorm
+      forecastIcon.addClass("bi bi-cloud-lightning-fill")
+    }
+
+    x+= 8
+  }
 }
 
 getDate()
