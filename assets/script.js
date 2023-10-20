@@ -1,21 +1,71 @@
-function getApi() {
-  let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=Austin&appid=6cddf7d816b2147ea014ff6c5dd1dbeb'
-  // {city} {key}
-  requestUrl.replace("city", "Austin")
-  requestUrl.replace("key", "6cddf7d816b2147ea014ff6c5dd1dbeb")
-  // console.log (requestUrl)
+let button = $(".search-btn")
+let list = $(".search-history")
+let history = []
+let input = $("#city")[0].value
 
-  fetch(requestUrl)
+function getApi() {
+  input = $("#city")[0].value
+  let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
+
+  fetch(requestUrl + new URLSearchParams({
+    q: input
+  }))
     .then(function (response) {
       return response.json()
     })
     .then(function (data) {
-      console.log(data)
+      // console.log(data)
 
       setCurrentWeather(data)
       setForecastWeather(data)
     });
+
+    setSearchHistory(input)
+  }
+
+function getSearchHistory() {
+  history = JSON.parse(localStorage.getItem("searchHistory"))
+  if (history != null) {
+    for (i = 0; i < history.length; i++) {
+      let createButton = $("<button>")
+      createButton.text(history[i])
+      list.append(createButton)
+    }
+  } else {
+    history = []
+    localStorage.setItem("searchHistory", JSON.stringify(history))
+  }
 }
+
+function setSearchHistory(input) {
+  // capitalize first letter of each word
+  capitalize = input.split(" ")
+  for (i = 0; i < capitalize.length; i++) {
+    capitalize[i] = capitalize[i].charAt(0).toUpperCase() + capitalize[i].slice(1)
+    input = capitalize.join(" ")
+  }
+  console.log(history)
+  if (history.includes(input)) {
+    // TODO: code to move existing city to top of list
+    let index = history.indexOf(input)
+    history.splice(index, 1)
+    history.splice(0, 0, input)
+    console.log(history)
+  } else {
+    if (history.length <= 10) {
+      history.unshift(input)
+    } else {
+      history.pop()
+      history.unshift(input)
+    }
+  }
+
+  let createButton = $("<button>")
+  createButton.text(input)
+  list.append(createButton)
+
+  localStorage.setItem("searchHistory", JSON.stringify(history))
+} 
 
 function setCurrentWeather(data) {
   let selectedCity = $(".city")
@@ -105,4 +155,5 @@ function setForecastIcons(data) {
 }
 
 getDate()
-getApi()
+getSearchHistory()
+button.on("click", getApi)
