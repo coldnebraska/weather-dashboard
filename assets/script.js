@@ -1,20 +1,9 @@
-let currentIcon = $("#current-weather-icon")
-let day1Icon = $("#day1-icon")
-let day2Icon = $("#day2-icon")
-let day3Icon = $("#day3-icon")
-let day4Icon = $("#day4-icon")
-let day5Icon = $("#day5-icon")
-let selectedCity = $(".city")
-let currentTemp = $("#current-temp")
-let currentWind = $("#current-wind")
-let currentHumidity = $("#current-humidity")
-
 function getApi() {
-  let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=London&appid=6cddf7d816b2147ea014ff6c5dd1dbeb'
+  let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=Austin&appid=6cddf7d816b2147ea014ff6c5dd1dbeb'
 // {city} {key}
   requestUrl.replace("city", "Austin")
   requestUrl.replace("key", "6cddf7d816b2147ea014ff6c5dd1dbeb")
-  console.log (requestUrl)
+  // console.log (requestUrl)
 
   fetch(requestUrl)
     .then(function (response) {
@@ -23,18 +12,18 @@ function getApi() {
     .then(function (data) {
       console.log(data)
 
-      console.log(data.city.name)
-      console.log(Math.floor(data.list[0].main.temp * 9 / 5 - 459.67)) // changes the default of K to F
-      console.log(data.list[0].main.humidity)
-      console.log(data.list[0].weather[0].id)
-      console.log(data.list[0].wind.speed)
-
       setCurrentWeather(data)
-      // setForecastWeather(data)
+      setForecastWeather(data)
     });
   }
 
   function setCurrentWeather(data) {
+    let selectedCity = $(".city")
+    let currentIcon = $("#current-weather-icon")
+    let currentTemp = $("#current-temp")
+    let currentWind = $("#current-wind")
+    let currentHumidity = $("#current-humidity")
+    
     selectedCity.text(data.city.name)
     currentTemp.text(Math.floor(data.list[0].main.temp * 9 / 5 - 459.67))
     currentWind.text(data.list[0].wind.speed)
@@ -55,15 +44,22 @@ function getApi() {
     }
   }
 
-  // TODO: Loop through the data and generate your HTML
-  // for (i = 0; i < data.length; i++) {
-  //   let userLogin = document.createElement("h3")
-  //   let userUrl = document.createElement("p")
-  //   userLogin.textContent = data[i].login
-  //   userUrl.textContent = data[i].html_url
-  //   userContainer.append(userLogin)
-  //   userContainer.append(userUrl)
-  // }
+  function setForecastWeather(data) {
+    // set forecast temp
+    let x = 7
+    for (i = 1; i <= 5; i++) {
+      let forecastTemp = $(".forecast").children().eq(i - 1).children().eq(2).children()
+      forecastTemp.text(Math.floor(data.list[x].main.temp * 9 / 5 - 459.67))
+
+      let forecastWind = $(".forecast").children().eq(i - 1).children().eq(3).children()
+      forecastWind.text(data.list[x].wind.speed)
+
+      let forecastHumidity = $(".forecast").children().eq(i - 1).children().eq(4).children()
+      forecastHumidity.text(data.list[x].main.humidity)
+      x += 8
+    }
+  }
+
 
 function getDate() {
   let date = new Date()
@@ -76,6 +72,11 @@ function getDate() {
 }
 
 function setIcons() {
+  let day1Icon = $("#day1-icon")
+  let day2Icon = $("#day2-icon")
+  let day3Icon = $("#day3-icon")
+  let day4Icon = $("#day4-icon")
+  let day5Icon = $("#day5-icon")
   
   day1Icon.addClass("bi bi-sun-fill")
   day2Icon.addClass("bi bi-sun-fill")
