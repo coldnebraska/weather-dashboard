@@ -14,8 +14,6 @@ function getApi() {
       return response.json()
     })
     .then(function (data) {
-      // console.log(data)
-
       setCurrentWeather(data)
       setForecastWeather(data)
     });
@@ -44,25 +42,35 @@ function setSearchHistory(input) {
     capitalize[i] = capitalize[i].charAt(0).toUpperCase() + capitalize[i].slice(1)
     input = capitalize.join(" ")
   }
-  console.log(history)
+
   if (history.includes(input)) {
-    // TODO: code to move existing city to top of list
     let index = history.indexOf(input)
-    history.splice(index, 1)
-    history.splice(0, 0, input)
-    console.log(history)
+    history.splice(index, 1) // deletes index of existing input
+    history.splice(0, 0, input) // puts input at top of list
+
+    for (i = 0; i < history.length; i++) {
+      let cityButton = list.children().eq(i)
+      cityButton.text(history[i])
+    }
   } else {
-    if (history.length <= 10) {
+    if (history.length < 10) {
       history.unshift(input)
+
+      let createButton = $("<button>")
+      createButton.text(input)
+      list.append(createButton)
     } else {
       history.pop()
       history.unshift(input)
+
+      for (i = 0; i < history.length; i++) {
+        let cityButton = list.children().eq(i)
+        cityButton.text(history[i])
+      }
     }
+    
   }
 
-  let createButton = $("<button>")
-  createButton.text(input)
-  list.append(createButton)
 
   localStorage.setItem("searchHistory", JSON.stringify(history))
 } 
