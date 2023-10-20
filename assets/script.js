@@ -70,7 +70,14 @@ function getDate() {
   let year = date.getFullYear()
   let currentDate = month + "/" + day + "/" + year
   let curDate = $("#current-date")
+  
   curDate.text(currentDate)
+
+  let forecastDate = $(".forecast").children().children("h3")
+
+  for (i = 0; i < 5; i++) {
+    forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
+  }
 }
 
 function setForecastIcons() {
