@@ -21,20 +21,20 @@ function getApi() {
     setSearchHistory(input)
   }
 
-  function searchApi(input) {
-    let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
+function searchApi(input) {
+  let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
 
-  fetch(requestUrl + new URLSearchParams({
-    q: input
-  }))
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (data) {
-      setCurrentWeather(data)
-      setForecastWeather(data)
-    });
-  }
+fetch(requestUrl + new URLSearchParams({
+  q: input
+}))
+  .then(function (response) {
+    return response.json()
+  })
+  .then(function (data) {
+    setCurrentWeather(data)
+    setForecastWeather(data)
+  });
+}
 
 function getSearchHistory() {
   history = JSON.parse(localStorage.getItem("searchHistory"))
@@ -105,17 +105,17 @@ function setCurrentWeather(data) {
   currentHumidity.text(data.list[0].main.humidity)
 
   if (data.list[0].weather[0].id === 800) { // clear
-    currentIcon.addClass("bi bi-sun-fill")
+    currentIcon.attr("class", "bi bi-sun-fill")
   } else if (data.list[0].weather[0].id > 800) { //cloudy
-    currentIcon.addClass("bi bi-cloud-fill")
+    currentIcon.attr("class", "bi bi-cloud-fill")
   } else if (data.list[0].weather[0].id < 800 && data.list[0].weather[0].id >= 700) { // haze/mist/fog/dust
-    currentIcon.addClass("bi bi-cloud-haze")
+    currentIcon.attr("class", "bi bi-cloud-haze")
   } else if (data.list[0].weather[0].id < 700 && data.list[0].weather[0].id >= 600) { // snow
-    currentIcon.addClass("bi bi-snow")
+    currentIcon.attr("class", "bi bi-snow")
   } else if (data.list[0].weather[0].id < 500 && data.list[0].weather[0].id >= 300) { // rain/drizzle
-    currentIcon.addClass("bi bi-cloud-rain-heavy-fill")
-  } else { // thunderstorm
-    currentIcon.addClass("bi bi-cloud-lightning-fill")
+    currentIcon.attr("class", "bi bi-cloud-rain-heavy-fill")
+  } else { // thunderstorm 500 - <600
+    currentIcon.attr("class", "bi bi-cloud-lightning-fill")
   }
 }
 
@@ -162,17 +162,17 @@ function setForecastIcons(data) {
     let forecastIcon = $(".forecast").children().children("i").eq(i)
 
     if (data.list[x].weather[0].id === 800) { // clear
-      forecastIcon.addClass("bi bi-sun-fill")
+      forecastIcon.attr("class", "bi bi-sun-fill")
     } else if (data.list[x].weather[0].id > 800) { //cloudy
-      forecastIcon.addClass("bi bi-cloud-fill")
+      forecastIcon.attr("class", "bi bi-cloud-fill")
     } else if (data.list[x].weather[0].id < 800 && data.list[x].weather[0].id >= 700) { // haze/mist/fog/dust
-      forecastIcon.addClass("bi bi-cloud-haze")
+      forecastIcon.attr("class", "bi bi-cloud-haze")
     } else if (data.list[x].weather[0].id < 700 && data.list[x].weather[0].id >= 600) { // snow
-      forecastIcon.addClass("bi bi-snow")
+      forecastIcon.attr("class", "bi bi-snow")
     } else if (data.list[x].weather[0].id < 500 && data.list[x].weather[0].id >= 300) { // rain/drizzle
-      forecastIcon.addClass("bi bi-cloud-rain-heavy-fill")
-    } else { // thunderstorm
-      forecastIcon.addClass("bi bi-cloud-lightning-fill")
+      forecastIcon.attr("class", "bi bi-cloud-rain-heavy-fill")
+    } else { // thunderstorm 500 - <600
+      forecastIcon.attr("class", "bi bi-cloud-lightning-fill")
     }
 
     x+= 8
