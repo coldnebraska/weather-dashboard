@@ -84,12 +84,54 @@ header h1 {
 
 .forecast {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .forecast div {
     background-color: rgb(38, 38, 38);
     color: white;
     width: 18%;
+    min-width: 130px;
     padding-left: 5px;
+    margin: auto;
+}
+
+#day1 {
+    margin-left: 0;
+}
+
+#day5 {
+    margin-right: 0;
+}
+
+@media screen and (max-width: 950px) {
+    .forecast div {
+        margin: 0;
+        margin-top: 10px;
+        margin-right: 12px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    header h1 {
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .search ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .search ul button {
+        width: 23%;
+        height: 45px;
+        margin: auto;
+        margin-top: 10px;
+    }
 }
