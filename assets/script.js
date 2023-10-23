@@ -1,4 +1,4 @@
-let button = $(".search-btn")
+let searchButton = $(".search-btn")
 let list = $(".search-history")
 let history = []
 let input = $("#city")[0].value
@@ -21,18 +21,36 @@ function getApi() {
     setSearchHistory(input)
   }
 
+  function searchApi(input) {
+    let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
+
+  fetch(requestUrl + new URLSearchParams({
+    q: input
+  }))
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (data) {
+      setCurrentWeather(data)
+      setForecastWeather(data)
+    });
+  }
+
 function getSearchHistory() {
   history = JSON.parse(localStorage.getItem("searchHistory"))
   if (history != null) {
     for (i = 0; i < history.length; i++) {
       let createButton = $("<button>")
       createButton.text(history[i])
+      createButton.attr("id", i)
       list.append(createButton)
     }
   } else {
     history = []
     localStorage.setItem("searchHistory", JSON.stringify(history))
   }
+  let button = $("button[id]")
+  button.on("click", searchHistoryButton)
 }
 
 function setSearchHistory(input) {
@@ -70,7 +88,6 @@ function setSearchHistory(input) {
     }
     
   }
-
 
   localStorage.setItem("searchHistory", JSON.stringify(history))
 } 
@@ -162,6 +179,11 @@ function setForecastIcons(data) {
   }
 }
 
+function searchHistoryButton() {
+  let buttonContent = this.innerHTML
+  searchApi(buttonContent)
+}
+
 getDate()
 getSearchHistory()
-button.on("click", getApi)
+searchButton.on("click", getApi)
