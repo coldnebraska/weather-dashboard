@@ -5,7 +5,7 @@ let input = $("#city")[0].value
 
 function getApi() {
   input = $("#city")[0].value
-  let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
+  let requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
 
   fetch(requestUrl + new URLSearchParams({
     q: input
@@ -21,7 +21,7 @@ function getApi() {
   }
 
 function searchApi(input) {
-  let requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
+  let requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
 
 fetch(requestUrl + new URLSearchParams({
   q: input
