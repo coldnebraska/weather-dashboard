@@ -10,7 +10,7 @@ To use this webpage, input a city into the textbox. If the city is known by the 
 ![Alt text](./assets/images/image.png)
 
 ## Live Application
-The link to the live application of the webpage is: 
+The link to the live application of the webpage is: https://coldnebraska.github.io/weather-dashboard/ 
 
 ## Source Code
-The source code is located at the website 
+The source code is located at the website https://github.com/coldnebraska/weather-dashboard 
