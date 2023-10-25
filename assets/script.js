@@ -16,9 +16,8 @@ function getApi() {
     .then(function (data) {
       setCurrentWeather(data)
       setForecastWeather(data)
+      setSearchHistory(input)
     });
-
-    setSearchHistory(input)
   }
 
 function searchApi(input) {
@@ -33,6 +32,7 @@ fetch(requestUrl + new URLSearchParams({
   .then(function (data) {
     setCurrentWeather(data)
     setForecastWeather(data)
+    setSearchHistory(input)
   });
 }
 
