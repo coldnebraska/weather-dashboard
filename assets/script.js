@@ -145,14 +145,38 @@ function getDate() {
   let year = date.getFullYear()
   let currentDate = month + "/" + day + "/" + year
   let curDate = $("#current-date")
+  let forecastDate = $(".forecast").children().children("h3")
   
   curDate.text(currentDate)
 
-  let forecastDate = $(".forecast").children().children("h3")
-
-  for (i = 0; i < 5; i++) {
-    forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
+  if (day <= daysInMonth(month, year) - 5) {
+    for (i = 0; i < 5; i++) {
+      forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
+    }
+  } else {
+    let i = 0
+    while (i < 5) {
+      if (day + i + 1 <= daysInMonth(month, year)) {
+        forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
+        i++
+        console.log(day+i+1)
+      }
+      if (day + i + 1 > daysInMonth(month, year)) {
+        month += 1
+        day = 1
+        while (i < 5) {
+          forecastDate.eq([i]).text(month + "/" + (day) + "/" + year)
+          day += 1
+          i++
+          console.log("changed")
+        }
+      }
+    }
   }
+}
+
+function daysInMonth (month, year) {
+  return new Date(year, month, 0).getDate();
 }
 
 function setForecastIcons(data) {
