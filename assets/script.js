@@ -81,7 +81,8 @@ function setSearchHistory(input) {
       
       let createButton = $("<button>")
       createButton.text(input)
-      list.append(createButton)
+      createButton.attr("id", i)
+      list.prepend(createButton)
     } else {
       history.pop()
       history.unshift(input)
