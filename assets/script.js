@@ -6,26 +6,26 @@ let input = $("#city")[0].value
 function getApi() {
   input = $("#city")[0].value
   let requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
-
+  
   fetch(requestUrl + new URLSearchParams({
     q: input
   }))
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (data) {
-      setCurrentWeather(data)
-      setForecastWeather(data)
-      setSearchHistory(input)
-    });
-  }
+  .then(function (response) {
+    return response.json()
+  })
+  .then(function (data) {
+    setCurrentWeather(data)
+    setForecastWeather(data)
+    setSearchHistory(input)
+  });
+}
 
 function searchApi(input) {
   let requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?appid=6cddf7d816b2147ea014ff6c5dd1dbeb&'
-
-fetch(requestUrl + new URLSearchParams({
-  q: input
-}))
+  
+  fetch(requestUrl + new URLSearchParams({
+    q: input
+  }))
   .then(function (response) {
     return response.json()
   })
@@ -53,6 +53,11 @@ function getSearchHistory() {
   button.on("click", searchHistoryButton)
 }
 
+function searchHistoryButton() {
+  let buttonContent = this.innerHTML
+  searchApi(buttonContent)
+}
+
 function setSearchHistory(input) {
   // capitalize first letter of each word
   capitalize = input.split(" ")
@@ -60,12 +65,12 @@ function setSearchHistory(input) {
     capitalize[i] = capitalize[i].charAt(0).toUpperCase() + capitalize[i].slice(1)
     input = capitalize.join(" ")
   }
-
+  
   if (history.includes(input)) {
     let index = history.indexOf(input)
     history.splice(index, 1) // deletes index of existing input
     history.splice(0, 0, input) // puts input at top of list
-
+    
     for (i = 0; i < history.length; i++) {
       let cityButton = list.children().eq(i)
       cityButton.text(history[i])
@@ -73,22 +78,20 @@ function setSearchHistory(input) {
   } else {
     if (history.length < 10) {
       history.unshift(input)
-
+      
       let createButton = $("<button>")
       createButton.text(input)
       list.append(createButton)
     } else {
       history.pop()
       history.unshift(input)
-
+      
       for (i = 0; i < history.length; i++) {
         let cityButton = list.children().eq(i)
         cityButton.text(history[i])
       }
     }
-    
   }
-
   localStorage.setItem("searchHistory", JSON.stringify(history))
 } 
 
@@ -103,7 +106,7 @@ function setCurrentWeather(data) {
   currentTemp.text(Math.floor(data.list[0].main.temp * 9 / 5 - 459.67))
   currentWind.text(data.list[0].wind.speed)
   currentHumidity.text(data.list[0].main.humidity)
-
+  
   if (data.list[0].weather[0].id === 800) { // clear
     currentIcon.attr("class", "bi bi-sun-fill")
   } else if (data.list[0].weather[0].id > 800) { //cloudy
@@ -121,70 +124,28 @@ function setCurrentWeather(data) {
 
 function setForecastWeather(data) {
   let x = 7
-
+  
   for (i = 1; i <= 5; i++) {
     let forecastTemp = $(".forecast").children().eq(i - 1).children().eq(2).children()
     forecastTemp.text(Math.floor(data.list[x].main.temp * 9 / 5 - 459.67))
-
+    
     let forecastWind = $(".forecast").children().eq(i - 1).children().eq(3).children()
     forecastWind.text(data.list[x].wind.speed)
-
+    
     let forecastHumidity = $(".forecast").children().eq(i - 1).children().eq(4).children()
     forecastHumidity.text(data.list[x].main.humidity)
-
+    
     x += 8
   }
-
   setForecastIcons(data)
-}
-
-function getDate() {
-  let date = new Date()
-  let day = date.getDate()
-  let month = date.getMonth() + 1
-  let year = date.getFullYear()
-  let currentDate = month + "/" + day + "/" + year
-  let curDate = $("#current-date")
-  let forecastDate = $(".forecast").children().children("h3")
-  
-  curDate.text(currentDate)
-
-  if (day <= daysInMonth(month, year) - 5) {
-    for (i = 0; i < 5; i++) {
-      forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
-    }
-  } else {
-    let i = 0
-    while (i < 5) {
-      if (day + i + 1 <= daysInMonth(month, year)) {
-        forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
-        i++
-        console.log(day+i+1)
-      }
-      if (day + i + 1 > daysInMonth(month, year)) {
-        month += 1
-        day = 1
-        while (i < 5) {
-          forecastDate.eq([i]).text(month + "/" + (day) + "/" + year)
-          day += 1
-          i++
-          console.log("changed")
-        }
-      }
-    }
-  }
-}
-
-function daysInMonth (month, year) {
-  return new Date(year, month, 0).getDate();
 }
 
 function setForecastIcons(data) {
   let x = 7
-
+  
   for (i = 0; i < 5; i++) {
     let forecastIcon = $(".forecast").children().children("i").eq(i)
-
+    
     if (data.list[x].weather[0].id === 800) { // clear
       forecastIcon.attr("class", "bi bi-sun-fill")
     } else if (data.list[x].weather[0].id > 800) { //cloudy
@@ -198,14 +159,47 @@ function setForecastIcons(data) {
     } else { // thunderstorm 500 - <600
       forecastIcon.attr("class", "bi bi-cloud-lightning-fill")
     }
-
     x+= 8
   }
 }
 
-function searchHistoryButton() {
-  let buttonContent = this.innerHTML
-  searchApi(buttonContent)
+function getDate() {
+  let date = new Date()
+  let day = date.getDate()
+  let month = date.getMonth() + 1
+  let year = date.getFullYear()
+  let currentDate = month + "/" + day + "/" + year
+  let curDate = $("#current-date")
+  let forecastDate = $(".forecast").children().children("h3")
+  
+  curDate.text(currentDate)
+  
+  if (day <= daysInMonth(month, year) - 5) {
+    for (i = 0; i < 5; i++) {
+      forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
+    }
+  } else {
+    let i = 0
+    while (i < 5) {
+      if (day + i + 1 <= daysInMonth(month, year)) {
+        forecastDate.eq([i]).text(month + "/" + (day + i + 1) + "/" + year)
+        i++
+      }
+      if (day + i + 1 > daysInMonth(month, year)) {
+        month += 1
+        day = 1
+        while (i < 5) {
+          forecastDate.eq([i]).text(month + "/" + (day) + "/" + year)
+          day += 1
+          i++
+        }
+      }
+    }
+  }
+}
+
+function daysInMonth (month, year) {
+  return new Date(year, month, 0).getDate();
 }
 
 getDate()
